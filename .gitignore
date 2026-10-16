@@ -1,0 +1,4 @@
+bin/
+obj/
+customerManagement.db
+.DS_Store
