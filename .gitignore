@@ -2,3 +2,5 @@ bin/
 obj/
 customerManagement.db
 .DS_Store
+customerManagement.db-shm
+customerManagement.db-wal

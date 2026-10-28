@@ -48,7 +48,10 @@ public class CustomersController : ControllerBase{
 
         if (customer == null)
         {
-          return NotFound();
+          return Problem(
+            statusCode: 404,
+            title: "Customer not found."
+          );
         }
 
         return Ok(customer);
@@ -63,16 +66,23 @@ public class CustomersController : ControllerBase{
     [HttpPut("{id}")]
     public ActionResult<Customer> UpdateCustomer(int id, Customer customer)
     {
+
+        if (id != customer.Id)
+        {
+            return Problem(
+            statusCode: 400,
+            title: "Invalid customer id information."
+            );
+        }
+
         var existingCustomer = _context.Customers.FirstOrDefault(c => c.Id == id);
     
         if (existingCustomer == null)
         {
-          return NotFound();
-        }
-
-        if (id != customer.Id)
-        {
-            return BadRequest();
+          return Problem(
+            statusCode: 404,
+            title: "Customer not found."
+          );
         }
 
         existingCustomer.FirstName = customer.FirstName;
@@ -84,14 +94,18 @@ public class CustomersController : ControllerBase{
 
         return NoContent();
 
-    }[HttpDelete("{id}")]
+    }
+    [HttpDelete("{id}")]
     public IActionResult DeleteCustomer(int id)
     {
         var existingCustomer = _context.Customers.FirstOrDefault(c => c.Id == id);
 
         if (existingCustomer == null)
         {
-          return NotFound();
+        return Problem(
+            statusCode: 404,
+            title: "Customer not found."
+          );
         }
 
         _context.Customers.Remove(existingCustomer);
